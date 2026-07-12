@@ -1291,10 +1291,10 @@ Plot2DWindow::setGranularity ()
   resolutionBox->setValue (getResolution ());
   layout->addWidget (resolutionBox, row, 1);
   connect (resolutionBox,
-           &QSpinBox::valueChanged,
+          QOverload<int>::of(&QSpinBox::valueChanged),
           [=](){
-	    setResolution (resolutionBox->value ());
-	    drawCurves ();
+	        setResolution (resolutionBox->value ());
+            drawCurves ();
           });
 
   row++;
