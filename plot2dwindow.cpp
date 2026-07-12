@@ -183,9 +183,9 @@ Plot2DWindow::updatePen (QPen *pen)
   {
     QColor bg = getPen ()->brush ().color ();
     QColor fg = QColor (bg);
-    float hue;
-    float saturation;
-    float lightness;
+    qreal hue;
+    qreal saturation;
+    qreal lightness;
     bg.getHslF (&hue, &saturation, &lightness);
     lightness = (lightness > 0.5) ? 0.0 : 1.0;
     //    saturation = 1.0;
@@ -1488,9 +1488,9 @@ Plot2DWindow::Plot2DWindow (MainWindow *parent, Plot2dData *data)
   {
     QColor bg = getPen ()->brush ().color ();
     QColor fg = QColor (bg);
-    float hue;
-    float saturation;
-    float lightness;
+    qreal hue;
+    qreal saturation;
+    qreal lightness;
     bg.getHslF (&hue, &saturation, &lightness);
     lightness = (lightness > 0.5) ? 0.0 : 1.0;
     //    saturation = 1.0;
