@@ -4,8 +4,8 @@
 #include <QtWidgets/QGraphicsItem>
 
 //QT_CHARTS_BEGIN_NAMESPACE
-class QChart;
-class QAbstractSeries;
+// class QChart;
+// class QAbstractSeries;
 //QT_CHARTS_END_NAMESPACE
 
 //QT_CHARTS_USE_NAMESPACE

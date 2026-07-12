@@ -3,14 +3,16 @@
 
 #include <QtWidgets>
 #include <QAbstractSeries>
-#include <QChart>
-#include <QChartView>
+#include <QtCharts/QChart>
+#include <QtCharts/QChartView>
 
 #include "mainwindow.h"
 #include "chart2dwindow.h"
 #include "complexspinbox.h"
 #include "scidoublespinbox.h"
 #include "plot2ddata.h"
+
+using namespace QtCharts;
 
 class Chart2DWindow;
 

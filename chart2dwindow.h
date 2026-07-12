@@ -2,9 +2,9 @@
 #define CHART2DWINDOW_H
 
 #include <QtWidgets>
-#include <QAbstractSeries>
-#include <QChart>
-#include <QChartView>
+#include <QtCharts/QChart>
+#include <QtCharts/QChartView>
+#include <QtCharts/QAbstractSeries>
 #include <QSplineSeries>
 #include <QRubberBand>
 
@@ -13,6 +13,8 @@
 #include "plot2ddata.h"
 
 #include "enums.h"
+
+using namespace QtCharts;
 
 class Plot2DWindow;
 class Chart2DWindow;
