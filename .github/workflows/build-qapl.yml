@@ -61,10 +61,46 @@ jobs:
             INCLUDEPATH+="/tmp/libapl/include"
           make -j"$(nproc)"
 
-      - name: Upload binary
+      # ── AppImage ─────────────────────────────────────────────────────────────
+      # linuxdeploy bundles the binary + deps; the Qt plugin adds platform
+      # plugins, xcb, image formats etc. that ldd alone would miss.
+      # APPIMAGE_EXTRACT_AND_RUN=1 bypasses FUSE (not available on GH runners).
+      - name: Download linuxdeploy + Qt plugin
+        run: |
+          wget -q -O linuxdeploy \
+            https://github.com/linuxdeploy/linuxdeploy/releases/download/continuous/linuxdeploy-x86_64.AppImage
+          wget -q -O linuxdeploy-plugin-qt \
+            https://github.com/linuxdeploy/linuxdeploy-plugin-qt/releases/download/continuous/linuxdeploy-plugin-qt-x86_64.AppImage
+          chmod +x linuxdeploy linuxdeploy-plugin-qt
+
+      - name: Assemble AppDir
+        run: |
+          mkdir -p AppDir/usr/bin
+          cp qapl AppDir/usr/bin/
+          # libapl.so* no longer copied manually —
+          # linuxdeploy picks it up via LD_LIBRARY_PATH below
+
+      - name: Package AppImage
+        env:
+          APPIMAGE_EXTRACT_AND_RUN: "1"
+        run: |
+          export PATH="$GITHUB_WORKSPACE:$PATH"
+          export QMAKE="$(which qmake)"
+          export LD_LIBRARY_PATH="/tmp/libapl/lib/apl:${LD_LIBRARY_PATH}"
+          ./linuxdeploy \
+            --appdir AppDir \
+            --plugin qt \
+            --output appimage \
+            --desktop-file packaging/appimage/qapl.desktop \
+            --icon-file images/qapl32logo.png
+
+      - name: Rename AppImage
+        run: mv qapl-*.AppImage QAPL.AppImage
+
+      - name: Upload AppImage
         uses: actions/upload-artifact@v7
         with:
-          name: qapl-linux-amd64
-          path: qapl
+          name: qapl-linux-amd64-AppImage
+          path: QAPL.AppImage
           if-no-files-found: error
           retention-days: 30

@@ -1,0 +1,9 @@
+[Desktop Entry]
+Name=qapl
+GenericName=APL Interpreter
+Comment=GNU APL graphical interactive environment
+Exec=qapl
+Icon=qapl32logo
+Type=Application
+Categories=Science;Education;Development;
+Terminal=false
