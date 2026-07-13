@@ -500,6 +500,14 @@ void MainWindow::createMenubar ()
 
   /****************************************/
 
+  QMenu *plotMenu = menuBar()->addMenu(tr("&Plot"));
+
+  QAction *plot2dAct =
+    plotMenu->addAction(tr("&2D Plots"), this, &MainWindow::plot2d);
+  plot2dAct->setStatusTip(tr("2D plots"));
+
+  /****************************************/
+
   QMenu *helpMenu = menuBar()->addMenu(tr("&Help"));
 
   QAction *symbolsAct =
@@ -511,13 +519,5 @@ void MainWindow::createMenubar ()
   QAction *aboutAct =
     helpMenu->addAction(tr("&About"), this, &MainWindow::aboutHelp);
   aboutAct->setStatusTip(tr("About qapl"));
-
-  /****************************************/
-
-  QMenu *plotMenu = menuBar()->addMenu(tr("&Plot"));
-
-  QAction *plot2dAct =
-    plotMenu->addAction(tr("&2D Plots"), this, &MainWindow::plot2d);
-  plot2dAct->setStatusTip(tr("2D plots"));
 
 }
