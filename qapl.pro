@@ -5,8 +5,6 @@ greaterThan(QT_MAJOR_VERSION, 4): QT += widgets
 CONFIG += c++11
 CONFIG += debug_and_release
 
-LIBS += -L`apl --show_lib_dir` -lapl -lreadline
-INCLUDEPATH += /home/moller/Downloads/apl-1486
 
 # You can make your code fail to compile if it uses deprecated APIs.
 # In order to do so, uncomment the following line.

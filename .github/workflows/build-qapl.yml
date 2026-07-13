@@ -1,0 +1,70 @@
+name: Build qapl
+
+on:
+  push:
+    branches: master
+  pull_request:
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout qapl
+        uses: actions/checkout@v5
+
+      # ── Qt5 ─────────────────────────────────────────────────────────────────
+      # qtchooser routes plain 'qmake' to Qt5; libqt5charts5-dev for QChart
+      # ── GNU APL quad-function libraries ─────────────────────────────────────
+      # libgtk-3-dev + libcairo2-dev  → ⎕PLOT native window (configure auto-detects)
+      # gnuplot                        → ⎕PLOT gnuplot backend (pipe-based, headless-safe)
+      # libfftw3-dev                   → ⎕FFT
+      # libsqlite3-dev                 → ⎕SQL
+      # libpcre2-dev                   → ⎕RE  (PCRE2 regex)
+      # liblapack-dev + libblas-dev    → ⎕LA  (LAPACK linear algebra)
+      # libpng-dev + libjpeg-turbo8-dev→ ⎕PLOT image file export (PNG/JPEG)
+      - name: Install dependencies
+        run: |
+          sudo apt-get update -q
+          sudo apt-get install -y \
+            qtbase5-dev qtchooser qt5-qmake libqt5charts5-dev \
+            libreadline-dev \
+            libgtk-3-dev libcairo2-dev \
+            gnuplot \
+            libfftw3-dev \
+            libsqlite3-dev \
+            libpcre2-dev \
+            liblapack-dev libblas-dev \
+            libgsl-dev \
+            libpng-dev libjpeg-turbo8-dev \
+            build-essential autoconf automake libtool pkg-config
+
+      # Keep the clone path in APL_SRC for all subsequent steps
+      - name: Clone GNU APL
+        run: |
+          git clone --depth=1 https://git.savannah.gnu.org/git/apl.git apl-src
+          echo "APL_SRC=$GITHUB_WORKSPACE/apl-src/trunk" >> "$GITHUB_ENV"
+
+      # Build only the library target; headers stay in src/, .so in src/.libs/
+      - name: Build libapl
+        run: |
+          cd "$APL_SRC"
+          ./configure --with-libapl --prefix "/tmp/libapl"
+          make -j"$(nproc)"
+          make install
+
+      - name: Build qapl
+        run: |
+          qmake \
+            INCLUDEPATH+="$APL_SRC" \
+            LIBS+="-L/tmp/libapl/lib/apl -lapl -lreadline" \
+            INCLUDEPATH+="/tmp/libapl/include"
+          make -j"$(nproc)"
+
+      - name: Upload binary
+        uses: actions/upload-artifact@v7
+        with:
+          name: qapl-linux-amd64
+          path: qapl
+          if-no-files-found: error
+          retention-days: 30
