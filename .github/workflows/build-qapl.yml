@@ -3,6 +3,7 @@ name: Build qapl
 on:
   push:
     branches: master
+    tags: 'v*'
   pull_request:
 
 jobs:
@@ -104,3 +105,9 @@ jobs:
           path: QAPL.AppImage
           if-no-files-found: error
           retention-days: 30
+
+      - name: Release (Tag)
+        if: startsWith(github.ref, 'refs/tags/')
+        uses: softprops/action-gh-release@v2
+        with:
+          files: QAPL.AppImage
