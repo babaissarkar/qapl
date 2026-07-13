@@ -7,3 +7,4 @@ Icon=qapl32logo
 Type=Application
 Categories=Science;Education;Development;
 Terminal=false
+StartupWMClass=qapl
