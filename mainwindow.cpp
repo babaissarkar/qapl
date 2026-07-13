@@ -5,6 +5,7 @@
 #include <QRegularExpression>
 #include <QVBoxLayout>
 #include <signal.h>
+#include <set>
 
 #include "mainwindow.h"
 #include "plot2dwindow.h"
@@ -12,11 +13,11 @@
 #include "optionstrings.h"
 #include "aplexec.h"
 #include "history.h"
+#include "qboxlayout.h"
 
 #include <apl/libapl.h>
 
 static const QColor red = QColor (255, 0, 0);
-static const QColor black = QColor (0, 0, 0);
 
 void MainWindow::printError (QString emsg, QString estr)
 {
@@ -399,7 +400,46 @@ MainWindow::MainWindow(QCommandLineParser &parser, QWidget *parent)
 		   this,
 		   SLOT(inputLineReturn()));
 
-  mainWidget->setLayout(layout);
+  QHBoxLayout* main_layout = new QHBoxLayout;
+  QGridLayout* symbols_input = new QGridLayout();
+  symbols_input->setSpacing(5);
+  const int columns = 4;
+  const int symbolCount = symbolsCount();
+
+  std::set<QString> syms; // used for duplicate checking
+
+  for (int count = 0; count < symbolCount; count++) {
+      QPushButton* btn = new QPushButton();
+      if (count >= symbolCount) break;
+
+      QString sym(help[count].prim);
+      if (syms.find(sym) == syms.end()) {
+        syms.insert(sym);
+      } else {
+        continue;
+      }
+
+      btn->setText(QString(help[count].prim));
+      btn->setToolTip(QString(help[count].name));
+      connect(btn, &QPushButton::clicked, this, [this, sym]() {
+        this->inputLine->insert(sym);
+      });
+      symbols_input->addWidget(btn, (syms.size() - 1) / columns, (syms.size() - 1) % columns);
+  }
+
+  QWidget* lpane = new QWidget();
+  lpane->setLayout(layout);
+  main_layout->addWidget(lpane, 1);
+  QWidget* rpane = new QWidget();
+  rpane->setLayout(symbols_input);
+  QScrollArea* scroll = new QScrollArea();
+  scroll->setWidget(rpane);
+  scroll->setWidgetResizable(true);
+  scroll->setFixedWidth(400);
+  scroll->setFixedHeight(600);
+  main_layout->addWidget(scroll, 0);
+
+  mainWidget->setLayout(main_layout);
 
   bool noCONT  = false;
   bool noSETUP = false;

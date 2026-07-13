@@ -4,19 +4,16 @@
 #include "mainwindow.h"
 #include "helpwindow.h"
 
-typedef struct {
-  int arity;
-  const char *prim;
-  const char *name;
-  const char *title;
-  const char *desc;
-} help_s;
-
 #define help_def(ar, prim, name, title, descr) \
   {ar, prim, name, title, descr},
-help_s help[] = {
+
+const help_s help[] = {
 #include "src/Help.def"
 };
+
+int symbolsCount() {
+  return (int)sizeof(help)/sizeof(help_s);
+}
 
 void
 HelpWindow::closeEvent(QCloseEvent *event __attribute__((unused)))
@@ -34,11 +31,11 @@ HelpWindow::HelpWindow (MainWindow *parent)
   QVBoxLayout *layout = new QVBoxLayout;
   this->setCentralWidget(hw);
   
-  int rowCount = (int)sizeof(help)/sizeof(help_s);
+  const int rowCount = symbolsCount();
   QTableWidget *table = new QTableWidget (rowCount, 2, this);
   table->setShowGrid(false);
   //  QStringList headers = {"Symbol", "Name", "Title", "Description"};
-  QStringList headers = {"Name", "Title"};
+  const QStringList headers = {"Name", "Title"};
   table->setHorizontalHeaderLabels (headers);
   
   for (int i = 0; i < rowCount; i++) {

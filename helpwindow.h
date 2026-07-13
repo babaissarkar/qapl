@@ -4,6 +4,19 @@
 #include <QtWidgets>
 #include "mainwindow.h"
 
+#pragma once
+
+struct help_s {
+    int arity;
+    const char *prim;
+    const char *name;
+    const char *title;
+    const char *desc;
+};
+
+extern const help_s help[];
+extern int symbolsCount();
+
 class MainWindow;
 
 class HelpWindow : public QMainWindow
