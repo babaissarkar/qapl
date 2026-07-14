@@ -1,0 +1,5 @@
+<RCC>
+    <qresource prefix="/">
+        <file>fonts/Apl385.ttf</file>
+    </qresource>
+</RCC>

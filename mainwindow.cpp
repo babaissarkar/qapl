@@ -421,6 +421,7 @@ MainWindow::MainWindow(QCommandLineParser &parser, QWidget *parent)
 
       btn->setText(QString(help[count].prim));
       btn->setToolTip(QString(help[count].name));
+      btn->setFont(outputFont);
       connect(btn, &QPushButton::clicked, this, [this, sym]() {
         this->inputLine->insert(sym);
       });

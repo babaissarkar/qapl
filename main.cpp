@@ -2,6 +2,7 @@
 
 #include "mainwindow.h"
 #include "optionstrings.h"
+#include "qglobal.h"
 
 #include <QApplication>
 #include <QCommandLineParser>
@@ -14,6 +15,8 @@ int main(int argc, char *argv[])
   QCoreApplication::setOrganizationName(APPLICATION_ORGANISATION);
   QCoreApplication::setApplicationName(APPLICATION_NAME);
   QCoreApplication::setApplicationVersion(APPLICATION_VERSION);
+
+  QFontDatabase::addApplicationFont(":/fonts/Apl385.ttf");
 
   QCommandLineParser parser;
   parser.setApplicationDescription("APL Environment");

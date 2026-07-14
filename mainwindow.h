@@ -20,17 +20,17 @@
 #define APPLICATION_VERSION	   "1.0"
 
 #define DEFAULT_EDITOR \
-   "emacs --geometry=40x20  -background '#ffffcc' -font \"DejaVu Sans Mono-10\""
+   "emacs --geometry=40x20  -background '#ffffcc' -font \"APL385 Unicode-12\""
 
 #define DEFAULT_GVIM_EDITOR \
-   "gvim -geometry=40x20  -background '#ffffcc' -font \"DejaVu Sans Mono-10\""
+   "gvim -geometry=40x20  -background '#ffffcc' -font \"APL385 Unicode-12\""
 
 #if 0
 #define DEFAULT_SLICK_EDITOR "/opt/slickedit-pro2020/bin/vs -q"
 #endif
 
-#define DEFAULT_FONT_FAMILY "DejaVu Sans Mono"
-#define DEFAULT_FONT_SIZE   10.0
+#define DEFAULT_FONT_FAMILY "APL385 Unicode"
+#define DEFAULT_FONT_SIZE   12.0
 #define DEFAULT_BG_COLOUR   "#f4f4d3"	// pale yellow
 #define DEFAULT_FG_COLOUR   "#000000"	// black
 #define DEFAULT_HEIGHT      512

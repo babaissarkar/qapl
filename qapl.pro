@@ -45,6 +45,8 @@ HEADERS += \
     xml.h \
     XMLtags.def
 
+RESOURCES += "resources.qrc"
+
 PREFIX = /usr/local
 
 # Default rules for deployment.
