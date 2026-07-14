@@ -16,8 +16,8 @@
 #define toCString(v)       ((v).toStdString ().c_str ())
 
 #define APPLICATION_ORGANISATION   "qapl"
-#define APPLICATION_NAME	   "qapl"
-#define APPLICATION_VERSION	   "1.0"
+#define APPLICATION_NAME           "qapl"
+#define APPLICATION_VERSION        "1.0"
 
 #define DEFAULT_EDITOR \
    "emacs --geometry=40x20  -background '#ffffcc' -font \"APL385 Unicode-12\""
@@ -93,8 +93,8 @@ private slots:
   void byebye ();
 
 private:
-  void 		     show_fcn (QString text);
-  void 		     edit_fcn (QString text);
+  void               show_fcn (QString text);
+  void               edit_fcn (QString text);
   void               wsLoad ();
   bool               wsSave ();
   bool               wsSaveAs ();
@@ -106,22 +106,22 @@ private:
   void               symbolsHelp ();
   void               aboutHelp ();
   void               plot2d ();
-  void		     killTempdir ();
+  void               killTempdir ();
   InputLineFilter   *inputLineFilter;
   QString            editor;
-  int		     editorIndex;
+  int                editorIndex;
   QStringList	     extraEditors;
   QTemporaryDir      tempdir;
   QFileSystemWatcher watcher;
-  QSettings  	    *settings;
-  QColor	     bg_colour;
-  QColor	     fg_colour;
+  QSettings         *settings;
+  QColor             bgColour;
+  QColor             fgColour;
   QVector<qint64>    processList;
-  QString 	     libpath;
-  save_mode_e        save_mode;                                                 
-  QString    	     currentAPLFile;
-  bool		     HWopen;
-  bool		     doTrace;
+  QString            libpath;
+  save_mode_e        save_mode;
+  QString            currentAPLFile;
+  bool               HWopen;
+  bool               doTrace;
   
 protected:
   void closeEvent(QCloseEvent *event) override;
