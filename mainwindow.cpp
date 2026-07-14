@@ -431,15 +431,21 @@ MainWindow::MainWindow(QCommandLineParser &parser, QWidget *parent)
 
   QWidget* lpane = new QWidget();
   lpane->setLayout(layout);
+
   main_layout->addWidget(lpane, 1);
+
   QWidget* rpane = new QWidget();
   rpane->setLayout(symbols_input);
   QScrollArea* scroll = new QScrollArea();
   scroll->setWidget(rpane);
   scroll->setWidgetResizable(true);
   scroll->setFixedWidth(400);
-  scroll->setFixedHeight(600);
-  main_layout->addWidget(scroll, 0);
+  QGroupBox* group = new QGroupBox("APL Symbols");
+  QVBoxLayout *groupLayout = new QVBoxLayout;
+  groupLayout->addWidget(scroll);
+  group->setLayout(groupLayout);
+
+  main_layout->addWidget(group, 0);
 
   mainWidget->setLayout(main_layout);
 

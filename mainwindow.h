@@ -33,8 +33,8 @@
 #define DEFAULT_FONT_SIZE   12.0
 #define DEFAULT_BG_COLOUR   "#f4f4d3"	// pale yellow
 #define DEFAULT_FG_COLOUR   "#000000"	// black
-#define DEFAULT_HEIGHT      512
-#define DEFAULT_WIDTH       700
+#define DEFAULT_HEIGHT      600
+#define DEFAULT_WIDTH       1000
 
 typedef enum {
   SAVE_MODE_NONE,
