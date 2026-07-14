@@ -279,6 +279,52 @@ void MainWindow::readScript (QString pfn) {
   readScript (pfn, fake, fake);
 }
 
+QGroupBox* MainWindow::createSymbolsPanel(const QFont& outputFont) {
+  // Create data for buttons
+  std::map<QString, QString> buttonInfos;
+
+  for (int count = 0; count < symbolsCount(); count++) {
+      auto itor = buttonInfos.emplace(help[count].prim, help[count].name);
+      auto& lastDesc = itor.first->second;
+      if (!itor.second && lastDesc != help[count].name) {
+          lastDesc += "/";
+          lastDesc += help[count].name;
+      }
+  }
+
+  // Create Panel UI
+  QGridLayout* symbolsInput = new QGridLayout();
+  symbolsInput->setSpacing(5);
+  const int columns = 4;
+
+  int idx = 0;
+  for (const auto& info : buttonInfos) {
+      const QString sym = info.first;
+      QPushButton* btn = new QPushButton(sym);
+      btn->setToolTip(info.second);
+      btn->setFont(outputFont);
+      connect(btn, &QPushButton::clicked, this, [this, sym]() {
+        this->inputLine->insert(sym);
+        this->inputLine->setFocus();
+      });
+      symbolsInput->addWidget(btn, idx / columns, idx % columns);
+      idx++;
+  }
+
+  QWidget* rpane = new QWidget();
+  rpane->setLayout(symbolsInput);
+  QScrollArea* scroll = new QScrollArea();
+  scroll->setWidget(rpane);
+  scroll->setWidgetResizable(true);
+  scroll->setFixedWidth(400);
+  QGroupBox* group = new QGroupBox("APL Symbols");
+  QVBoxLayout *groupLayout = new QVBoxLayout;
+  groupLayout->addWidget(scroll);
+  group->setLayout(groupLayout);
+
+  return group;
+}
+
 MainWindow::MainWindow(QCommandLineParser &parser, QWidget *parent)
   : QMainWindow(parent)
 {
@@ -400,34 +446,6 @@ MainWindow::MainWindow(QCommandLineParser &parser, QWidget *parent)
 		   this,
 		   SLOT(inputLineReturn()));
 
-  QGridLayout* symbolsInput = new QGridLayout();
-  symbolsInput->setSpacing(5);
-  const int columns = 4;
-  const int symbolCount = symbolsCount();
-
-  std::set<QString> syms; // used for duplicate checking
-
-  for (int count = 0; count < symbolCount; count++) {
-      QPushButton* btn = new QPushButton();
-      if (count >= symbolCount) break;
-
-      QString sym(help[count].prim);
-      if (syms.find(sym) == syms.end()) {
-        syms.insert(sym);
-      } else {
-        continue;
-      }
-
-      btn->setText(QString(help[count].prim));
-      btn->setToolTip(QString(help[count].name));
-      btn->setFont(outputFont);
-      connect(btn, &QPushButton::clicked, this, [this, sym]() {
-        this->inputLine->insert(sym);
-        this->inputLine->setFocus();
-      });
-      symbolsInput->addWidget(btn, (syms.size() - 1) / columns, (syms.size() - 1) % columns);
-  }
-
   QHBoxLayout* mainLayout = new QHBoxLayout;
 
   QWidget* lpane = new QWidget();
@@ -435,18 +453,7 @@ MainWindow::MainWindow(QCommandLineParser &parser, QWidget *parent)
 
   mainLayout->addWidget(lpane, 1);
 
-  QWidget* rpane = new QWidget();
-  rpane->setLayout(symbolsInput);
-  QScrollArea* scroll = new QScrollArea();
-  scroll->setWidget(rpane);
-  scroll->setWidgetResizable(true);
-  scroll->setFixedWidth(400);
-  QGroupBox* group = new QGroupBox("APL Symbols");
-  QVBoxLayout *groupLayout = new QVBoxLayout;
-  groupLayout->addWidget(scroll);
-  group->setLayout(groupLayout);
-
-  mainLayout->addWidget(group, 0);
+  mainLayout->addWidget(createSymbolsPanel(outputFont), 0);
 
   mainWidget->setLayout(mainLayout);
 

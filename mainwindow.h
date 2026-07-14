@@ -88,6 +88,9 @@ public:
   QTextEdit *outputLog;
   History   *history;
 
+private:
+  QGroupBox* createSymbolsPanel(const QFont& outputFont);
+
 private slots:
   void fileChanged(const QString &path);
   void byebye ();
