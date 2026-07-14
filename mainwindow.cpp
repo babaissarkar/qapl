@@ -25,14 +25,14 @@ void MainWindow::printError (QString emsg, QString estr)
   outputLog->append (emsg);
   if (estr.size () > 0)
     outputLog->append (estr);
-  outputLog->setTextColor (fg_colour);
+  outputLog->setTextColor (fgColour);
 }
 
 void MainWindow::printError (QString emsg)
 {
   outputLog->setTextColor (red);
   outputLog->append (emsg);
-  outputLog->setTextColor (fg_colour);
+  outputLog->setTextColor (fgColour);
 }
 
 static void
@@ -190,7 +190,7 @@ MainWindow::update_screen (QString &errString, QString &outString)
   if (!errString.isEmpty ()) {
     outputLog->setTextColor (red);
     outputLog->append (outString);
-    outputLog->setTextColor (fg_colour);
+    outputLog->setTextColor (fgColour);
   }
   if (!outString.isEmpty ()) outputLog->append (outString);
   QScrollBar *sb = outputLog->verticalScrollBar();
@@ -345,14 +345,14 @@ MainWindow::MainWindow(QCommandLineParser &parser, QWidget *parent)
     foregroundString = QString (DEFAULT_FG_COLOUR);
     settings->setValue (SETTINGS_FG_COLOUR, QVariant (foregroundString));
   }
-  fg_colour = QColor (foregroundString);
+  fgColour = QColor (foregroundString);
   
   QString backgroundString = settings->value (SETTINGS_BG_COLOUR).toString ();
   if (backgroundString.isEmpty ()) {
     backgroundString = QString (DEFAULT_BG_COLOUR);
     settings->setValue (SETTINGS_BG_COLOUR, QVariant (backgroundString));
   }
-  bg_colour = QColor (backgroundString);  
+  bgColour = QColor (backgroundString);
   
   history = new History ();
 
@@ -378,8 +378,8 @@ MainWindow::MainWindow(QCommandLineParser &parser, QWidget *parent)
 	   (double)font.pointSize ());
 #endif
   QPalette p = outputLog->palette(); 
-  p.setColor(QPalette::Base, bg_colour);
-  p.setColor(QPalette::Text, fg_colour); 
+  p.setColor(QPalette::Base, bgColour);
+  p.setColor(QPalette::Text, fgColour);
   outputLog->setPalette(p);
   outputLog->setReadOnly (true);
   layout->addWidget(outputLog);
@@ -387,8 +387,8 @@ MainWindow::MainWindow(QCommandLineParser &parser, QWidget *parent)
   inputLine = new QLineEdit;
   inputLine->setFont (outputFont);
   p = inputLine->palette(); 
-  p.setColor(QPalette::Base, bg_colour);
-  p.setColor(QPalette::Text, fg_colour); 
+  p.setColor(QPalette::Base, bgColour);
+  p.setColor(QPalette::Text, fgColour);
   inputLine->setPalette(p);
   inputLine->setPlaceholderText ("APL");
   inputLineFilter = new InputLineFilter (inputLine, this);
@@ -400,9 +400,8 @@ MainWindow::MainWindow(QCommandLineParser &parser, QWidget *parent)
 		   this,
 		   SLOT(inputLineReturn()));
 
-  QHBoxLayout* main_layout = new QHBoxLayout;
-  QGridLayout* symbols_input = new QGridLayout();
-  symbols_input->setSpacing(5);
+  QGridLayout* symbolsInput = new QGridLayout();
+  symbolsInput->setSpacing(5);
   const int columns = 4;
   const int symbolCount = symbolsCount();
 
@@ -426,16 +425,18 @@ MainWindow::MainWindow(QCommandLineParser &parser, QWidget *parent)
         this->inputLine->insert(sym);
         this->inputLine->setFocus();
       });
-      symbols_input->addWidget(btn, (syms.size() - 1) / columns, (syms.size() - 1) % columns);
+      symbolsInput->addWidget(btn, (syms.size() - 1) / columns, (syms.size() - 1) % columns);
   }
+
+  QHBoxLayout* mainLayout = new QHBoxLayout;
 
   QWidget* lpane = new QWidget();
   lpane->setLayout(layout);
 
-  main_layout->addWidget(lpane, 1);
+  mainLayout->addWidget(lpane, 1);
 
   QWidget* rpane = new QWidget();
-  rpane->setLayout(symbols_input);
+  rpane->setLayout(symbolsInput);
   QScrollArea* scroll = new QScrollArea();
   scroll->setWidget(rpane);
   scroll->setWidgetResizable(true);
@@ -445,9 +446,9 @@ MainWindow::MainWindow(QCommandLineParser &parser, QWidget *parent)
   groupLayout->addWidget(scroll);
   group->setLayout(groupLayout);
 
-  main_layout->addWidget(group, 0);
+  mainLayout->addWidget(group, 0);
 
-  mainWidget->setLayout(main_layout);
+  mainWidget->setLayout(mainLayout);
 
   bool noCONT  = false;
   bool noSETUP = false;

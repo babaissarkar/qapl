@@ -321,45 +321,45 @@ MainWindow::setFont ()
 
 void  MainWindow::setFGColour ()
 {
-  QColorDialog *colourDialog = new QColorDialog (fg_colour);
+  QColorDialog *colourDialog = new QColorDialog (fgColour);
   colourDialog->setWindowFlags(Qt::WindowStaysOnTopHint);
   colourDialog->setCustomColor (0, QColor (DEFAULT_BG_COLOUR));
   colourDialog->setCustomColor (1, QColor (DEFAULT_FG_COLOUR));
   colourDialog->setWindowTitle (tr ("Select foreground colour"));
   if (QDialog::Accepted == colourDialog->exec ()) {
-    fg_colour = colourDialog->selectedColor ();
+    fgColour = colourDialog->selectedColor ();
     
     QPalette p = outputLog->palette(); 
-    p.setColor(QPalette::Text, fg_colour);
+    p.setColor(QPalette::Text, fgColour);
     outputLog->setPalette(p);
     
     p = inputLine->palette(); 
-    p.setColor(QPalette::Text, fg_colour);
+    p.setColor(QPalette::Text, fgColour);
     inputLine->setPalette(p);
 
-    settings->setValue (SETTINGS_FG_COLOUR, QVariant (fg_colour.name ()));
+    settings->setValue (SETTINGS_FG_COLOUR, QVariant (fgColour.name ()));
   }
 }
 
 void  MainWindow::setBGColour ()
 {
-  QColorDialog *colourDialog = new QColorDialog (bg_colour);
+  QColorDialog *colourDialog = new QColorDialog (bgColour);
   colourDialog->setWindowFlags(Qt::WindowStaysOnTopHint);
   colourDialog->setCustomColor (0, QColor (DEFAULT_BG_COLOUR));
   colourDialog->setCustomColor (1, QColor (DEFAULT_FG_COLOUR));
   colourDialog->setWindowTitle (tr ("Select background colour"));
   if (QDialog::Accepted == colourDialog->exec ()) {
-    bg_colour = colourDialog->selectedColor ();
+    bgColour = colourDialog->selectedColor ();
     
     QPalette p = outputLog->palette(); 
-    p.setColor(QPalette::Base, bg_colour);
+    p.setColor(QPalette::Base, bgColour);
     outputLog->setPalette(p);
     
     p = inputLine->palette(); 
-    p.setColor(QPalette::Base, bg_colour);
+    p.setColor(QPalette::Base, bgColour);
     inputLine->setPalette(p);
 
-    settings->setValue (SETTINGS_BG_COLOUR, QVariant (bg_colour.name ()));
+    settings->setValue (SETTINGS_BG_COLOUR, QVariant (bgColour.name ()));
   }
 }
 
@@ -392,23 +392,23 @@ MainWindow::setColours ()
   connect (defaultColours,
            &QAbstractButton::clicked,
            [=](){
-	     bg_colour = QColor (DEFAULT_BG_COLOUR);
-	     fg_colour = QColor (DEFAULT_FG_COLOUR);
+	     bgColour = QColor (DEFAULT_BG_COLOUR);
+	     fgColour = QColor (DEFAULT_FG_COLOUR);
 
 	     QPalette p = outputLog->palette();
-	     p.setColor(QPalette::Base, bg_colour);
-	     p.setColor(QPalette::Text, fg_colour);
+	     p.setColor(QPalette::Base, bgColour);
+	     p.setColor(QPalette::Text, fgColour);
 	     outputLog->setPalette(p);
 
 	     p = inputLine->palette();
-	     p.setColor(QPalette::Base, bg_colour);
-	     p.setColor(QPalette::Text, fg_colour);
+	     p.setColor(QPalette::Base, bgColour);
+	     p.setColor(QPalette::Text, fgColour);
 	     inputLine->setPalette(p);
 
 	     settings->setValue (SETTINGS_BG_COLOUR,
-				 QVariant (bg_colour.name ()));
+				 QVariant (bgColour.name ()));
 	     settings->setValue (SETTINGS_FG_COLOUR,
-				 QVariant (fg_colour.name ()));
+				 QVariant (fgColour.name ()));
 	   });
   layout->addWidget (defaultColours, row, 0);
 
