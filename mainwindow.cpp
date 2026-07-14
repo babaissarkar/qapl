@@ -424,6 +424,7 @@ MainWindow::MainWindow(QCommandLineParser &parser, QWidget *parent)
       btn->setFont(outputFont);
       connect(btn, &QPushButton::clicked, this, [this, sym]() {
         this->inputLine->insert(sym);
+        this->inputLine->setFocus();
       });
       symbols_input->addWidget(btn, (syms.size() - 1) / columns, (syms.size() - 1) % columns);
   }
