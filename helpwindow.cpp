@@ -37,7 +37,7 @@ HelpWindow::HelpWindow(MainWindow *parent)
   QTableWidget* table = new QTableWidget(rowCount, 2, this);
   table->setShowGrid(false);
   //  QStringList headers = {"Symbol", "Name", "Title", "Description"};
-  const QStringList headers = {"Name", "Description"};
+  const QStringList headers = {"Name (Arity)", "Description"};
   table->setHorizontalHeaderLabels(headers);
   
   for (int i = 0; i < rowCount; i++) {
@@ -50,6 +50,7 @@ HelpWindow::HelpWindow(MainWindow *parent)
 
     QTableWidgetItem* primItem
       = new QTableWidgetItem(QString(help[i].prim));
+    primItem->setTextAlignment(Qt::AlignCenter);
 #if 1
     table->setVerticalHeaderItem(i, primItem);
 #else
@@ -57,7 +58,7 @@ HelpWindow::HelpWindow(MainWindow *parent)
 #endif
     
     QTableWidgetItem* nameItem
-      = new QTableWidgetItem(QString(help[i].name));
+      = new QTableWidgetItem(QString(help[i].name) + " (" + QString::number(help[i].arity) + ")");
     table->setItem(i, 0, nameItem);
     
     QTableWidgetItem* titleItem
@@ -71,9 +72,10 @@ HelpWindow::HelpWindow(MainWindow *parent)
 #endif
   }
 
-  table->resizeColumnToContents(0);
-  table->setColumnWidth(1, 700 - table->columnWidth(0));
-  table->setMinimumWidth(700);
+  table->resizeColumnsToContents();
+  table->horizontalHeader()->setSectionResizeMode(
+    QHeaderView::ResizeToContents);
+  table->setSizeAdjustPolicy(QAbstractScrollArea::AdjustToContents);
   table->setMinimumHeight(600);
   layout->addWidget(table);
 
