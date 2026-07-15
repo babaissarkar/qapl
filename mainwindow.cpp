@@ -5,7 +5,6 @@
 #include <QRegularExpression>
 #include <QVBoxLayout>
 #include <signal.h>
-#include <set>
 
 #include "mainwindow.h"
 #include "plot2dwindow.h"
@@ -330,31 +329,39 @@ MainWindow::MainWindow(QCommandLineParser &parser, QWidget *parent)
 {
   HWopen = false;
   tempdir.setAutoRemove (true);
-  QString pfn = QString ("%1/.gnu-apl/preferences").arg (getenv ("HOME"));
-  if (!QFile::exists (pfn))
-    pfn = QString ("%1/.config/gnu-apl/preferences")
-      .arg (getenv ("HOME"));
-  QFile pfile(pfn);
-  if (pfile.open (QIODevice::ReadOnly | QIODevice::Text)) {
-#define BUFFER_SIZE 512
-    char buffer[BUFFER_SIZE];
-    while (0 < pfile.readLine(buffer, BUFFER_SIZE)) {
-      if (strcasestr (buffer, "LIBREF-0")) {
-        char path[BUFFER_SIZE];
-        if (0 < sscanf (buffer, " %*s %s \n", path))
-          libpath = QString (path);
+
+  // Read APL library path from preferences
+  const char* home = getenv("HOME");
+  if (home) {
+    QString pfn = QString("%1/.gnu-apl/preferences").arg(home);
+    if (!QFile::exists(pfn)) {
+      pfn = QString("%1/.config/gnu-apl/preferences").arg(home);
+    }
+
+    QFile pfile(pfn);
+    if (pfile.open(QIODevice::ReadOnly | QIODevice::Text)) {
+      QTextStream in(&pfile);
+      while (!in.atEnd()) {
+        QString line = in.readLine();
+        QStringList fields = line.split(QRegularExpression("\\s+"), Qt::SkipEmptyParts);
+        // Only LIBREF-0 is the default library path; gnu-apl supports LIBREF-0..9
+        // but qapl only needs the default, so we match exactly on LIBREF-0.
+        if (fields.size() >= 2 && fields[0].compare("LIBREF-0", Qt::CaseInsensitive) == 0) {
+          libpath = fields[1];
+          break;
+        }
       }
     }
-    pfile.close ();
   }
 
-  {		// override if env vbl exists
-    char *lp = getenv ("APL_LIB_ROOT");
-    if (lp)
-      libpath = QString (lp) + "/workspaces";
+  {  // override if env vbl exists
+    const char* lp = getenv("APL_LIB_ROOT");
+    if (lp) {
+      libpath = QString(lp) + "/workspaces";
+    }
   }
-  
 
+  // Load Settings
   static QSettings lsettings;
   settings = &lsettings;
 
