@@ -27,7 +27,7 @@ HelpWindow::closeEvent(QCloseEvent *event __attribute__((unused)))
 HelpWindow::HelpWindow(MainWindow *parent)
   : QMainWindow(parent)
 {
-  this->setWindowTitle ("qapl Help");
+  this->setWindowTitle("qapl Symbols Help");
   mw = parent;
   QWidget* hw = new QWidget();
   QVBoxLayout* layout = new QVBoxLayout;
@@ -71,9 +71,10 @@ HelpWindow::HelpWindow(MainWindow *parent)
 #endif
   }
 
-  table->resizeColumnToContents (0);
-  table->setColumnWidth (1, 640 - table->columnWidth (0));
-  table->setMinimumWidth (640);
+  table->resizeColumnToContents(0);
+  table->setColumnWidth(1, 700 - table->columnWidth(0));
+  table->setMinimumWidth(700);
+  table->setMinimumHeight(600);
   layout->addWidget(table);
 
   hw->setLayout(layout);
