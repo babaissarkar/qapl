@@ -1,5 +1,6 @@
 <RCC>
     <qresource prefix="/">
         <file>fonts/Apl385.ttf</file>
+        <file>images/qapl32logo.png</file>
     </qresource>
 </RCC>

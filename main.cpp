@@ -12,6 +12,7 @@ int main(int argc, char *argv[])
   init_libapl ("apl", 0);
 
   QApplication app(argc, argv);
+  app.setWindowIcon(QIcon(":/images/qapl32logo.png"));
   QCoreApplication::setOrganizationName(APPLICATION_ORGANISATION);
   QCoreApplication::setApplicationName(APPLICATION_NAME);
   QCoreApplication::setApplicationVersion(APPLICATION_VERSION);
