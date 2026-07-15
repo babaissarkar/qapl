@@ -9,7 +9,7 @@
 
 int main(int argc, char *argv[])
 {
-  init_libapl ("apl", 0);
+  init_libapl("apl", 0);
 
   QApplication app(argc, argv);
   app.setWindowIcon(QIcon(":/images/qapl32logo.png"));
@@ -24,16 +24,16 @@ int main(int argc, char *argv[])
   parser.addHelpOption();
   parser.addVersionOption();
 
-  QCommandLineOption noCONT  (OPT_noCONT, "Skip CONTINUE workspace.");
+  QCommandLineOption noCONT(OPT_noCONT, "Skip CONTINUE workspace.");
   parser.addOption(noCONT);
 
-  QCommandLineOption noSETUP (OPT_noSETUP, "Skip SETUP workspace.");
+  QCommandLineOption noSETUP(OPT_noSETUP, "Skip SETUP workspace.");
   parser.addOption(noSETUP);
 
-  QCommandLineOption noINIT (OPT_noINIT, "Skip initialisation script.");
+  QCommandLineOption noINIT(OPT_noINIT, "Skip initialisation script.");
   parser.addOption(noINIT);
 
-  QCommandLineOption doTRACE (OPT_TRACE, "Enable trace.");
+  QCommandLineOption doTRACE(OPT_TRACE, "Enable trace.");
   parser.addOption(doTRACE);
 
   QCommandLineOption loadws(OPT_L, "Workspace to load.", "<ws>");
@@ -42,7 +42,7 @@ int main(int argc, char *argv[])
 
   parser.process(app);
   
-  MainWindow w (parser);
+  MainWindow w(parser);
   w.show();
   return app.exec();
 }
