@@ -10,8 +10,23 @@
 
 // src/Help.def comes from gnu-apl source tree
 const help_s help[] = {
-#include "src/Help.def"
+  #include "src/Help.def"
+
+  {-6, "⍺", "Alpha",
+   "Left argument of a dfn",
+   "⍺ refers to the left argument inside a dfn.\n"
+   "It is undefined if the dfn was called monadically.\n"
+   "      f ← {⍺+⍵}   ⍝ ⍺ is left arg\n"
+   "      3 f 4        ⍝ yields 7"},
+
+  {-6, "⍵", "Omega",
+   "Right argument of a dfn",
+   "⍵ refers to the right argument inside a dfn.\n"
+   "      f ← {⍵×⍵}   ⍝ ⍵ is right arg\n"
+   "      f 5          ⍝ yields 25"},
 };
+
+#undef help_def
 
 int symbolsCount() {
   return (int)sizeof(help)/sizeof(help_s);
