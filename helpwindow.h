@@ -24,7 +24,6 @@ class HelpWindow : public QMainWindow
 
 public:
   HelpWindow (MainWindow *parent = nullptr);
-  ~HelpWindow ();
 
 private:
   MainWindow *mw;

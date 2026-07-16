@@ -1400,15 +1400,6 @@ void Plot2DWindow::createMenubar ()
 
 }
 
-void
-Plot2DWindow::closeEvent(QCloseEvent *event __attribute__((unused)))
-{
-  delete this;
-}
-
-//https://doc.qt.io/qt-5/qlineedit.html#contextMenuEvent
-
-
 Plot2DWindow::Plot2DWindow (MainWindow *parent, Plot2dData *data)
   : QMainWindow(parent)
 {
@@ -1609,8 +1600,4 @@ Plot2DWindow::Plot2DWindow (MainWindow *parent, Plot2dData *data)
 
   hw->setLayout(layout);
   this->show ();
-}
-
-Plot2DWindow::~Plot2DWindow ()
-{
 }

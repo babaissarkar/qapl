@@ -27,7 +27,6 @@ class Plot2DWindow : public QMainWindow
 
 public:
   Plot2DWindow (MainWindow *parent, Plot2dData *data);
-  ~Plot2DWindow ();
   QString  getAplXExpression () {
     return plot2DData->activeCurve.Xexpression ();
   }
@@ -208,9 +207,6 @@ private:
   Plot2dData *plot2DData;
   SciDoubleSpinBox *minBox;
   SciDoubleSpinBox *maxBox;
-  
-protected:
-  void closeEvent(QCloseEvent *event) override;
 };
 
 #endif // PLOT2DWINDOW_H

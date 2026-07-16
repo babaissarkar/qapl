@@ -32,7 +32,6 @@ void
 HelpWindow::closeEvent(QCloseEvent *event __attribute__((unused)))
 {
   mw->closeHW();
-  delete this;
 }
 
 HelpWindow::HelpWindow(MainWindow *parent)
@@ -93,8 +92,3 @@ HelpWindow::HelpWindow(MainWindow *parent)
   hw->setLayout(layout);
   this->show();
 }
-
-HelpWindow::~HelpWindow()
-{
-}
-
