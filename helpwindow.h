@@ -14,8 +14,7 @@ struct help_s {
     const char *desc;
 };
 
-extern const help_s help[];
-extern int symbolsCount();
+extern const std::vector<help_s> help;
 
 class MainWindow;
 

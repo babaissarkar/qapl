@@ -282,12 +282,12 @@ QGroupBox* MainWindow::createSymbolsPanel(const QFont& outputFont) {
   // Create data for buttons
   std::map<QString, QString> buttonInfos;
 
-  for (int count = 0; count < symbolsCount(); count++) {
-      auto itor = buttonInfos.emplace(help[count].prim, help[count].name);
+  for (const auto& sym : help) {
+      auto itor = buttonInfos.emplace(sym.prim, sym.name);
       auto& lastDesc = itor.first->second;
-      if (!itor.second && lastDesc != help[count].name) {
+      if (!itor.second && lastDesc != sym.name) {
           lastDesc += "/";
-          lastDesc += help[count].name;
+          lastDesc += sym.name;
       }
   }
 

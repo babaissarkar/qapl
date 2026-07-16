@@ -9,7 +9,7 @@
   {ar, prim, name, title, descr},
 
 // src/Help.def comes from gnu-apl source tree
-const help_s help[] = {
+const std::vector<help_s> help = {
   #include "src/Help.def"
 
   {-6, "⍺", "Alpha",
@@ -28,10 +28,6 @@ const help_s help[] = {
 
 #undef help_def
 
-int symbolsCount() {
-  return (int)sizeof(help)/sizeof(help_s);
-}
-
 void
 HelpWindow::closeEvent(QCloseEvent *event __attribute__((unused)))
 {
@@ -48,7 +44,7 @@ HelpWindow::HelpWindow(MainWindow *parent)
   QVBoxLayout* layout = new QVBoxLayout;
   this->setCentralWidget(hw);
   
-  const int rowCount = symbolsCount();
+  const int rowCount = help.size();
   QTableWidget* table = new QTableWidget(rowCount, 2, this);
   table->setShowGrid(false);
   //  QStringList headers = {"Symbol", "Name", "Title", "Description"};
