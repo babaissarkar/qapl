@@ -114,7 +114,7 @@ MainWindow::wsSave()
     op = QString (")save");
     break;
   case SAVE_MODE_DUMP:
-    op = QString (")save");
+    op = QString (")dump");
     break;
   case SAVE_MODE_OUT:
     break;
