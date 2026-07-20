@@ -280,15 +280,22 @@ void MainWindow::readScript (QString pfn) {
 }
 
 QGroupBox* MainWindow::createSymbolsPanel(const QFont& outputFont) {
-  // Create data for buttons
-  std::map<QString, QString> buttonInfos;
+  // Create data for symbol panel buttons: [symbol, [name, description]]
+  std::map<QString, std::pair<QString, QString>> buttonInfos;
 
-  for (const auto& sym : help) {
-      auto itor = buttonInfos.emplace(sym.prim, sym.name);
-      auto& lastDesc = itor.first->second;
-      if (!itor.second && lastDesc != sym.name) {
-          lastDesc += "/";
-          lastDesc += sym.name;
+  for (const auto& [arity, prim, name, title, desc] : help) {
+      auto [itor, inserted] = buttonInfos.emplace(prim, std::make_pair(name, desc));
+      auto [lastName, lastDesc] = itor->second;
+      if (!inserted) {
+        if (lastName != name) {
+          lastName += lastName.isEmpty() ? "" : "/";
+          lastName += name;
+        }
+
+        if (lastDesc != desc) {
+          lastDesc += lastDesc.isEmpty() ? "" : "; ";
+          lastDesc += desc;
+        }
       }
   }
 
@@ -298,19 +305,21 @@ QGroupBox* MainWindow::createSymbolsPanel(const QFont& outputFont) {
   const int columns = 4;
 
   int idx = 0;
-  for (const auto& info : buttonInfos) {
-      const QString sym = info.first;
-      const QString desc = info.second;
+  for (const auto& [sym, info] : buttonInfos) {
+      const auto& [name, desc] = info;
       HoverButton* btn = new HoverButton(sym);
-      btn->setToolTip(info.second);
+      btn->setToolTip(name);
       btn->setFont(outputFont);
+
       connect(btn, &QPushButton::clicked, this, [this, sym]() {
         this->inputLine->insert(sym);
         this->inputLine->setFocus();
       });
-      connect(btn, &HoverButton::hovered, this, [this, desc]() {
-        this->statusBar()->showMessage(desc);
+
+      connect(btn, &HoverButton::hovered, this, [this, name, desc]() {
+        this->statusBar()->showMessage(name + (desc.isEmpty() ? "" : ": ") + desc);
       });
+
       connect(btn, &HoverButton::unhovered, this, [this, desc]() {
         this->statusBar()->clearMessage();
       });
@@ -446,15 +455,16 @@ MainWindow::MainWindow(QCommandLineParser &parser, QWidget *parent)
   layout->addWidget(outputLog);
 
   inputLine = new QLineEdit;
-  inputLine->setFont (outputFont);
+  inputLine->setFont(outputFont);
   p = inputLine->palette(); 
   p.setColor(QPalette::Base, bgColour);
   p.setColor(QPalette::Text, fgColour);
   inputLine->setPalette(p);
-  inputLine->setPlaceholderText ("APL");
-  inputLineFilter = new InputLineFilter (inputLine, this);
-  inputLine->setEnabled (true);
+  inputLine->setPlaceholderText("Type APL Expression here. Press 'Enter' to Excute.");
+  inputLineFilter = new InputLineFilter(inputLine, this);
+  inputLine->setEnabled(true);
   inputLine->installEventFilter(inputLineFilter);
+  inputLine->setFocus();
   layout->addWidget(inputLine);
   QObject::connect(inputLine,
 		   SIGNAL(returnPressed()),
