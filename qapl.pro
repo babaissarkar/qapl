@@ -14,6 +14,7 @@ SOURCES += \
     aplexec.cpp \
     chart2dwindow.cpp \
     complexspinbox.cpp \
+    hover_button.cpp \
     edif.cpp \
     greeklineedit.cpp \
     helpwindow.cpp \
@@ -31,6 +32,7 @@ HEADERS += \
     aplexec.h \
     chart2dwindow.h \
     complexspinbox.h \
+    hover_button.h \
     enums.h \
     greeklineedit.h \
     helpwindow.h \

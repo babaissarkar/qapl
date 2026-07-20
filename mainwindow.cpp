@@ -12,6 +12,7 @@
 #include "optionstrings.h"
 #include "aplexec.h"
 #include "history.h"
+#include "hover_button.h"
 #include "qboxlayout.h"
 
 #include <apl/libapl.h>
@@ -299,12 +300,19 @@ QGroupBox* MainWindow::createSymbolsPanel(const QFont& outputFont) {
   int idx = 0;
   for (const auto& info : buttonInfos) {
       const QString sym = info.first;
-      QPushButton* btn = new QPushButton(sym);
+      const QString desc = info.second;
+      HoverButton* btn = new HoverButton(sym);
       btn->setToolTip(info.second);
       btn->setFont(outputFont);
       connect(btn, &QPushButton::clicked, this, [this, sym]() {
         this->inputLine->insert(sym);
         this->inputLine->setFocus();
+      });
+      connect(btn, &HoverButton::hovered, this, [this, desc]() {
+        this->statusBar()->showMessage(desc);
+      });
+      connect(btn, &HoverButton::unhovered, this, [this, desc]() {
+        this->statusBar()->clearMessage();
       });
       symbolsInput->addWidget(btn, idx / columns, idx % columns);
       idx++;
@@ -463,6 +471,8 @@ MainWindow::MainWindow(QCommandLineParser &parser, QWidget *parent)
   mainLayout->addWidget(createSymbolsPanel(outputFont), 0);
 
   mainWidget->setLayout(mainLayout);
+
+  this->statusBar()->showMessage("Hover on button to show symbol help here.");
 
   bool noCONT  = false;
   bool noSETUP = false;
