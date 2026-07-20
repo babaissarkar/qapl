@@ -1,8 +1,8 @@
 QT       += core gui widgets charts
 
-greaterThan(QT_MAJOR_VERSION, 4): QT += widgets
+greaterThan(QT_MAJOR_VERSION, 5): QT += widgets
 
-CONFIG += c++11
+CONFIG += c++20
 CONFIG += debug_and_release
 
 
